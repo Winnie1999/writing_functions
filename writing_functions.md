@@ -44,12 +44,11 @@ x_vec = rnorm(30, mean = 5, sd = 3)
 (x_vec - mean(x_vec)) / sd(x_vec)
 ```
 
-    ##  [1] -0.279475145 -0.265277479 -1.060857774  1.155453895  1.554848751
-    ##  [6]  1.221278233 -0.236088753  1.212267123 -0.715514362  0.388728565
-    ## [11] -1.606967129 -0.867995882  1.529991763  1.284900105  0.237335880
-    ## [16] -1.597960442  0.633691994 -0.710063390 -0.811459426 -1.819675156
-    ## [21]  1.456941230 -0.060443733 -0.722179747 -0.617428853  0.005083901
-    ## [26]  1.157385317  0.752066155 -0.349193160 -0.282079651 -0.587312828
+    ##  [1]  0.36160307  0.39039430 -1.22687991  0.71862688 -2.32167788  0.79408496
+    ##  [7]  0.08105414  0.91282061 -0.25615295  0.09674139  0.01564957  1.41887387
+    ## [13] -0.66488485 -0.30008055 -0.04611658 -0.14546085 -1.34704030 -0.65814208
+    ## [19]  0.37607011 -1.88679024  0.88891428  2.03254611 -0.36363294 -1.30039891
+    ## [25]  1.21929314 -0.67592408 -0.41017967  0.99278657  1.17612842  0.12777438
 
 I want a function to compute z-scores
 
@@ -59,7 +58,7 @@ z_scores = function(x) {
   if (!is.numeric(x)) {
     stop("Input must be numeric")
   }
-  if (length(x) < 3){
+  if (length(x) < 3) {
     stop("Input must have at least three numbers")
   }
   z =  (x - mean(x)) / sd(x)
@@ -69,12 +68,11 @@ z_scores = function(x) {
 z_scores(x_vec)
 ```
 
-    ##  [1] -0.279475145 -0.265277479 -1.060857774  1.155453895  1.554848751
-    ##  [6]  1.221278233 -0.236088753  1.212267123 -0.715514362  0.388728565
-    ## [11] -1.606967129 -0.867995882  1.529991763  1.284900105  0.237335880
-    ## [16] -1.597960442  0.633691994 -0.710063390 -0.811459426 -1.819675156
-    ## [21]  1.456941230 -0.060443733 -0.722179747 -0.617428853  0.005083901
-    ## [26]  1.157385317  0.752066155 -0.349193160 -0.282079651 -0.587312828
+    ##  [1]  0.36160307  0.39039430 -1.22687991  0.71862688 -2.32167788  0.79408496
+    ##  [7]  0.08105414  0.91282061 -0.25615295  0.09674139  0.01564957  1.41887387
+    ## [13] -0.66488485 -0.30008055 -0.04611658 -0.14546085 -1.34704030 -0.65814208
+    ## [19]  0.37607011 -1.88679024  0.88891428  2.03254611 -0.36363294 -1.30039891
+    ## [25]  1.21929314 -0.67592408 -0.41017967  0.99278657  1.17612842  0.12777438
 
 Try my function on some other things. These should give errors
 
@@ -101,3 +99,98 @@ z_scores(c(TRUE, TRUE, FALSE,TRUE))
 ```
 
     ## Error in z_scores(c(TRUE, TRUE, FALSE, TRUE)): Input must be numeric
+
+# Multiple outputs
+
+``` r
+mean_and_sd = function(x) {
+  
+  if (!is.numeric(x)) {
+    stop("Input must be numeric")
+  }
+  if (length(x) < 3) {
+    stop("Input must have at least three numbers")
+  }
+  mean_x =  mean(x)
+  sd_x = sd(x)
+  
+  tibble(
+    mean = mean_x,
+    sd = sd_x
+  )
+  
+}
+```
+
+Check tat the function works
+
+``` r
+x_vec = rnorm(1000,mean = 3, sd = 4)
+mean_and_sd(x_vec)
+```
+
+    ## # A tibble: 1 × 2
+    ##    mean    sd
+    ##   <dbl> <dbl>
+    ## 1  2.86  4.04
+
+## Multiple inputs
+
+I’d like to do this with a function
+
+``` r
+sim_data = 
+  tibble(
+    x = rnorm(100, mean = 4, sd = 3)
+  )
+
+sim_data %>% 
+  summarize(
+    mean = mean(x),
+    sd = sd(x)
+  )
+```
+
+    ## # A tibble: 1 × 2
+    ##    mean    sd
+    ##   <dbl> <dbl>
+    ## 1  4.35  2.93
+
+``` r
+sim_mean_sd = function(samp_size,mu = 3, sigma = 4){ #default setting
+  sim_data = 
+  tibble(
+    x = rnorm(n = samp_size, mean = mu, sd = sigma)
+  )
+
+  sim_data %>% 
+    summarize(
+      mean = mean(x),
+      sd = sd(x)
+    )
+}
+sim_mean_sd(100, 6, 3) #position matching
+```
+
+    ## # A tibble: 1 × 2
+    ##    mean    sd
+    ##   <dbl> <dbl>
+    ## 1  6.19  2.83
+
+``` r
+sim_mean_sd(samp_size = 100, mu = 6, sigma = 3) #name matching
+```
+
+    ## # A tibble: 1 × 2
+    ##    mean    sd
+    ##   <dbl> <dbl>
+    ## 1  5.65  2.95
+
+``` r
+sim_mean_sd(samp_size = 100)
+```
+
+    ## # A tibble: 1 × 2
+    ##    mean    sd
+    ##   <dbl> <dbl>
+    ## 1  3.46  3.95
