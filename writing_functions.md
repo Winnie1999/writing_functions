@@ -55,12 +55,11 @@ x_vec = rnorm(30, mean = 5, sd = 3)
 (x_vec - mean(x_vec)) / sd(x_vec)
 ```
 
-    ##  [1]  1.527623229  0.457162756 -1.458876512 -0.326138923  0.305014997
-    ##  [6] -1.049278151 -0.397085275  0.623229596 -0.980690220  2.006465801
-    ## [11] -0.779450044 -0.603708074 -0.385539236  2.567648106  0.002453284
-    ## [16] -1.190758363 -0.037459572  0.336020563  0.344224517  0.451766864
-    ## [21] -0.757289957  1.320493802  0.717530130 -0.244883898 -1.180093024
-    ## [26]  0.855359895 -0.560734108 -0.289780097 -1.558954003  0.285725915
+    ##  [1]  1.85045994 -0.15594607 -0.11483976  1.92562161  1.42704065 -0.07598200
+    ##  [7] -1.42073286 -1.12144518 -0.14673116  0.04496000 -0.46362889 -1.14073776
+    ## [13]  0.46091755  0.64423164 -0.63168951  0.61664986  0.39461567 -0.74852363
+    ## [19]  0.86960704 -1.51734176  1.13436874 -1.00427685  0.02063649  0.17116407
+    ## [25]  1.58247731 -1.41918900 -1.68515464  0.26925534  0.17929738  0.05491577
 
 I want a function to compute z-scores
 
@@ -80,12 +79,11 @@ z_scores = function(x) {
 z_scores(x_vec)
 ```
 
-    ##  [1]  1.527623229  0.457162756 -1.458876512 -0.326138923  0.305014997
-    ##  [6] -1.049278151 -0.397085275  0.623229596 -0.980690220  2.006465801
-    ## [11] -0.779450044 -0.603708074 -0.385539236  2.567648106  0.002453284
-    ## [16] -1.190758363 -0.037459572  0.336020563  0.344224517  0.451766864
-    ## [21] -0.757289957  1.320493802  0.717530130 -0.244883898 -1.180093024
-    ## [26]  0.855359895 -0.560734108 -0.289780097 -1.558954003  0.285725915
+    ##  [1]  1.85045994 -0.15594607 -0.11483976  1.92562161  1.42704065 -0.07598200
+    ##  [7] -1.42073286 -1.12144518 -0.14673116  0.04496000 -0.46362889 -1.14073776
+    ## [13]  0.46091755  0.64423164 -0.63168951  0.61664986  0.39461567 -0.74852363
+    ## [19]  0.86960704 -1.51734176  1.13436874 -1.00427685  0.02063649  0.17116407
+    ## [25]  1.58247731 -1.41918900 -1.68515464  0.26925534  0.17929738  0.05491577
 
 Try my function on some other things. These should give errors
 
@@ -145,7 +143,7 @@ mean_and_sd(x_vec)
     ## # A tibble: 1 × 2
     ##    mean    sd
     ##   <dbl> <dbl>
-    ## 1  2.97  3.99
+    ## 1  2.89  4.07
 
 ## Multiple inputs
 
@@ -167,7 +165,7 @@ sim_data %>%
     ## # A tibble: 1 × 2
     ##    mean    sd
     ##   <dbl> <dbl>
-    ## 1  3.81  3.12
+    ## 1  4.01  2.99
 
 ``` r
 sim_mean_sd = function(samp_size,mu = 3, sigma = 4){ #default setting
@@ -188,7 +186,7 @@ sim_mean_sd(100, 6, 3) #position matching
     ## # A tibble: 1 × 2
     ##    mean    sd
     ##   <dbl> <dbl>
-    ## 1  6.05  2.77
+    ## 1  6.42  2.93
 
 ``` r
 sim_mean_sd(samp_size = 100, mu = 6, sigma = 3) #name matching
@@ -197,7 +195,7 @@ sim_mean_sd(samp_size = 100, mu = 6, sigma = 3) #name matching
     ## # A tibble: 1 × 2
     ##    mean    sd
     ##   <dbl> <dbl>
-    ## 1  6.06  2.87
+    ## 1  6.21  3.12
 
 ``` r
 sim_mean_sd(samp_size = 100)
@@ -206,7 +204,7 @@ sim_mean_sd(samp_size = 100)
     ## # A tibble: 1 × 2
     ##    mean    sd
     ##   <dbl> <dbl>
-    ## 1  2.74  3.74
+    ## 1  2.93  4.11
 
 ## Let’s review Napoleon Dynamite
 
@@ -315,20 +313,20 @@ all_reviews =
    read_page_reviews(dynamite_urls[4]),
    read_page_reviews(dynamite_urls[5])
   )
-all_reviews
 ```
 
-    ## # A tibble: 50 × 3
-    ##    title                                                 stars text             
-    ##    <chr>                                                 <dbl> <chr>            
-    ##  1 Vintage                                                   5 Easy to order. I…
-    ##  2 too many commercials                                      1 5 minutes into t…
-    ##  3 this film is so good!                                     5 VOTE FOR PEDRO!  
-    ##  4 Good movie                                                5 Weird story, goo…
-    ##  5 I Just everyone to know this....                          5 VOTE FOR PEDRO !…
-    ##  6 the cobweb in his hair during the bike ramp scene lol     5 5 stars for bein…
-    ##  7 Best quirky movie ever                                    5 You all know the…
-    ##  8 Classic Film                                              5 Had to order thi…
-    ##  9 hehehehe                                                  5 goodjobboys      
-    ## 10 Painful                                                   1 I think I sneeze…
-    ## # … with 40 more rows
+## Mean scoping example
+
+``` r
+f = function(x){
+  z = x + y
+  z
+}
+# global environment
+x = 1
+y = 2
+
+f(x = y)
+```
+
+    ## [1] 4
