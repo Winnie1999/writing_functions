@@ -2,7 +2,7 @@
 title: "simulation"
 author: "Yiqun Jin"
 date: "11/28/2021"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
